@@ -1,0 +1,9 @@
+{
+	"data" : [
+		{"id" : 10001,"skillFac" : 0.5,"skillBase" : 0,"cost" : 0,"cd" : 1},
+		{"id" : 10002,"skillFac" : 3,"skillBase" : 35,"cost" : 0,"cd" : 4},
+		{"id" : 10003,"skillFac" : 1,"skillBase" : 0,"cost" : 0,"cd" : 1},
+		{"id" : 10004,"skillFac" : 3,"skillBase" : 50,"cost" : 0,"cd" : 10}
+	],
+	"excelName" : "skill.技能.xlsx"
+}

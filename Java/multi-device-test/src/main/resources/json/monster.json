@@ -1,0 +1,9 @@
+{
+	"data" : [
+		{"servId" : 1,"id" : 10000,"name" : "怪物1","attr" : {"maxHp" : 100,"maxMp" : 0,"atk" : 35,"def" : 30},"skills" : [10003,10004]},
+		{"servId" : 2,"id" : 10001,"name" : "怪物2","attr" : {"maxHp" : 120,"maxMp" : 0,"atk" : 50,"def" : 0},"skills" : [10003,10004]},
+		{"servId" : 3,"id" : 10002,"name" : "怪物3","attr" : {"maxHp" : 150,"maxMp" : 0,"atk" : 20,"def" : 100},"skills" : [10003,10004]},
+		{"servId" : 4,"id" : 10003,"name" : "怪物4","attr" : {"maxHp" : 200,"maxMp" : 0,"atk" : 10,"def" : 50},"skills" : [10003,10004]}
+	],
+	"excelName" : "monster.怪物.xlsx"
+}
