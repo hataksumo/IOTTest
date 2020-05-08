@@ -3,7 +3,11 @@
 		{"id" : 10000,"name" : "金币","iniNum" : 1000,"quality" : 1},
 		{"id" : 10001,"name" : "普通宝石","iniNum" : 0,"quality" : 2},
 		{"id" : 10002,"name" : "精良宝石","iniNum" : 0,"quality" : 3},
-		{"id" : 10003,"name" : "史诗宝石","iniNum" : 0,"quality" : 4}
+		{"id" : 10003,"name" : "史诗宝石","iniNum" : 0,"quality" : 4},
+		{"id" : 10004,"name" : "血瓶-小","iniNum" : 20,"quality" : 1,"params" : [200]},
+		{"id" : 10005,"name" : "血瓶-中","iniNum" : 0,"quality" : 2,"params" : [500]},
+		{"id" : 10006,"name" : "血瓶-大","iniNum" : 0,"quality" : 3,"params" : [1000]},
+		{"id" : 10007,"name" : "复活石","iniNum" : 0,"quality" : 4}
 	],
 	"excelName" : "item.道具.xlsx"
 }

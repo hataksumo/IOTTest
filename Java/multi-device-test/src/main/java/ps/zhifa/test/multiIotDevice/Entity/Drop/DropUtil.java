@@ -1,11 +1,8 @@
-package ps.zhifa.test.multiIotDevice.Entity;
+package ps.zhifa.test.multiIotDevice.Entity.Drop;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import ps.zhifa.test.multiIotDevice.Config.Data.DropConfigData;
 import ps.zhifa.test.multiIotDevice.Config.Data.DropGroupConfigData;
 import ps.zhifa.test.multiIotDevice.Config.DropConfig;
-import ps.zhifa.test.multiIotDevice.common.FileUtils;
 
 import java.util.ArrayList;
 import java.util.List;

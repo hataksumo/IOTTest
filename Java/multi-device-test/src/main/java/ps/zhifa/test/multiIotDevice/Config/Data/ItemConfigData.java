@@ -9,4 +9,5 @@ public class ItemConfigData
     String name;
     int iniNum;
     int quality;
+    float[] params;
 }

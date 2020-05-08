@@ -1,4 +1,4 @@
-package ps.zhifa.test.multiIotDevice.Entity;
+package ps.zhifa.test.multiIotDevice.Entity.Drop;
 
 import lombok.Data;
 

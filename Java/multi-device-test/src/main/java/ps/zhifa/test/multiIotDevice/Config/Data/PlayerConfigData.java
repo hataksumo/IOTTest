@@ -9,4 +9,6 @@ public class PlayerConfigData
     DeviceConfigData device;
     AttrConfigData attr;
     int[] skills;
+    int rebornBuyHpBottleNum;
+    int rebornBuyResurrectStone;
 }
