@@ -12,7 +12,6 @@ public class EconomicalBehaviourCmd extends BehaviourCmd
     }
 
     public enum SubType{
-        Rebonr,
         BuyHpBottle,
         BuyResurrectStone,
         Charge

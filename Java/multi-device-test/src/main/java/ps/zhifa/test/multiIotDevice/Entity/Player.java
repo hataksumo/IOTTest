@@ -1,8 +1,10 @@
 package ps.zhifa.test.multiIotDevice.Entity;
 
 import com.huaweicloud.sdk.iot.device.IoTDevice;
+import ps.zhifa.test.multiIotDevice.App;
 import ps.zhifa.test.multiIotDevice.Config.Data.*;
 import ps.zhifa.test.multiIotDevice.Config.ItemConfig;
+import ps.zhifa.test.multiIotDevice.Entity.Cmd.EconomicalBehaviourCmd;
 import ps.zhifa.test.multiIotDevice.Entity.Skill.SkillEffectEntity;
 import ps.zhifa.test.multiIotDevice.Entity.Spot.BattleSpot;
 import ps.zhifa.test.multiIotDevice.Entity.Spot.Spot;
@@ -23,20 +25,16 @@ public class Player extends ActiveEntity
     RpgDropService _rpgService;
     Map<Integer,Integer> _bag;
     static final int HP_BOTTLE_ID = 10004;
-    static final int HP_BOTTLE_PRICE = 10;
     static final int HP_BOTTLE_RECOVER = 100;
 
     static final int COIN_ID = 10000;
-    static final int CHARGE_NUM = 6;
-    static final int CHARGE_REWORD = 1000;
     static final int RESURRECT_STONE_ID = 10007;
-    static final int RESURRECT_STONE_PRICE = 500;
     static final int REVIVE_COST = 1000;
     int _eatBottles = 0;
     int _charge = 0;
-    int _rebornBuyHpBottleNum = 0;
-    int _rebornBuyResurrectStone = 0;
-
+    int _prepareHpBottleNum = 0;
+    int _prepareResurrectStone = 0;
+    App _app;
 
     public Player()
     {
@@ -53,8 +51,13 @@ public class Player extends ActiveEntity
         _device = new IoTDevice(Global.IOT_SERVER_address,deviceConfigData.getId(),deviceConfigData.getSecret());
         initWithAttrCfg(attrConfigData);
         initWithSkillCfg(v_cfg.getSkills());
-        _rebornBuyHpBottleNum = v_cfg.getRebornBuyHpBottleNum();
-        _rebornBuyResurrectStone = v_cfg.getRebornBuyHpBottleNum();
+        _prepareHpBottleNum = v_cfg.getRebornBuyHpBottleNum();
+        _prepareResurrectStone = v_cfg.getRebornBuyHpBottleNum();
+    }
+
+    public void setApp(App v_app)
+    {
+        _app = v_app;
     }
 
     public void initDevice(String v_url,String v_deviceId,String v_passwd)
@@ -84,25 +87,12 @@ public class Player extends ActiveEntity
         return null;
     }
 
-//    @Override
-//    public void _onReborn() {
-//        int bottleNum = _bag.get(HP_BOTTLE_ID);
-//        if(bottleNum < _rebornBuyHpBottleNum)
-//        {
-//            buyBottles(_rebornBuyHpBottleNum - bottleNum);
-//        }
-//        int resurrectNum = _bag.get(RESURRECT_STONE_ID);
-//        if(resurrectNum < _rebornBuyResurrectStone)
-//        {
-//            buyResurrectStone(_rebornBuyResurrectStone - resurrectNum);
-//        }
-//    }
 
-    public boolean affordable(List<ElementData> v_cost)
+    public boolean affordable(List<ItemElementData> v_cost)
     {
         for(int i=0;i<v_cost.size();i++)
         {
-            ElementData cie = v_cost.get(i);
+            ItemElementData cie = v_cost.get(i);
             if(_bag.get(cie.getItemId()) < cie.getCnt())
             {
                 return false;
@@ -111,7 +101,7 @@ public class Player extends ActiveEntity
         return true;
     }
 
-    public boolean pay(List<ElementData> v_cost)
+    public boolean pay(List<ItemElementData> v_cost)
     {
         if(!affordable(v_cost))
             return false;
@@ -119,21 +109,21 @@ public class Player extends ActiveEntity
         return true;
     }
 
-    public void payWhatever(List<ElementData> v_cost)
+    public void payWhatever(List<ItemElementData> v_cost)
     {
         for(int i=0;i<v_cost.size();i++)
         {
-            ElementData cie = v_cost.get(i);
+            ItemElementData cie = v_cost.get(i);
             int newCnt = _bag.get(cie.getItemId()) - cie.getCnt();
             _bag.put(cie.getItemId(),newCnt);
         }
     }
 
-    public void award(List<ElementData> v_cost)
+    public void award(List<ItemElementData> v_cost)
     {
         for(int i=0;i<v_cost.size();i++)
         {
-            ElementData cie = v_cost.get(i);
+            ItemElementData cie = v_cost.get(i);
             int newCnt = _bag.get(cie.getItemId()) + cie.getCnt();
             _bag.put(cie.getItemId(),newCnt);
         }
@@ -144,37 +134,10 @@ public class Player extends ActiveEntity
     {
         int newCoin = _bag.get(COIN_ID) - REVIVE_COST;
         _bag.put(COIN_ID,newCoin);
+        enterSpot(_app.getMainCity());
     }
 
-//    public void buyBottles(int v_num)
-//    {
-//        int cost =  HP_BOTTLE_PRICE * v_num;
-//        if(_bag.get(COIN_ID)<cost)
-//        {
-//            return;
-//        }
-//        int newCoin = _bag.get(COIN_ID) - cost;
-//        _bag.put(COIN_ID,newCoin);
-//        _bag.put(HP_BOTTLE_ID,_bag.get(HP_BOTTLE_ID) + v_num);
-//    }
-//
-//    public void buyResurrectStone(int v_num)
-//    {
-//        int cost =  RESURRECT_STONE_PRICE * v_num;
-//        if(_bag.get(RESURRECT_STONE_ID)<cost)
-//        {
-//            return;
-//        }
-//        int newCoin = _bag.get(COIN_ID) - cost;
-//        _bag.put(COIN_ID,newCoin);
-//        _bag.put(RESURRECT_STONE_ID,_bag.get(RESURRECT_STONE_ID) + v_num);
-//    }
-//
-//    public void charge()
-//    {
-//        _charge = _charge + CHARGE_NUM;
-//        _bag.put(COIN_ID,_bag.get(COIN_ID) + CHARGE_REWORD);
-//    }
+
 
     public void eatBottle()
     {
@@ -189,28 +152,47 @@ public class Player extends ActiveEntity
         }
     }
 
-//    public Boolean revive()
-//    {
-//        int resurrectStoneNum = _bag.get(RESURRECT_STONE_ID);
-//        if(resurrectStoneNum > 0)
-//        {
-//            _bag.put(RESURRECT_STONE_ID,resurrectStoneNum - 1);
-//            reborn();
-//            return true;
-//        }
-//        while(_bag.get(COIN_ID) < REVIVE_COST)
-//        {
-//            charge();
-//        }
-//        _bag.put(COIN_ID,_bag.get(COIN_ID) - REVIVE_COST);
-//        reborn();
-//        return true;
-//    }
 
     public void enterSpot(Spot v_spot)
     {
         v_spot.onPlayerEnter(this);
         this._spot = v_spot;
+    }
+
+    public void charge(int v_num)
+    {
+        _charge = _charge + v_num;
+    }
+
+    public boolean hasResurrectStone()
+    {
+        Integer num = _bag.get(RESURRECT_STONE_ID);
+        if(num != null)
+            return num>0;
+        return false;
+    }
+
+    public void useResurrectStone()
+    {
+        Integer newNum = _bag.get(RESURRECT_STONE_ID) - 1;
+        _bag.put(RESURRECT_STONE_ID,newNum);
+        reborn();
+    }
+
+    public int getCoins()
+    {
+        return _bag.get(COIN_ID);
+    }
+
+    public boolean isPrepared()
+    {
+        return _bag.get(HP_BOTTLE_ID) >= _prepareHpBottleNum && _bag.get(RESURRECT_STONE_ID) >= _prepareResurrectStone;
+    }
+
+    public List<EconomicalBehaviourCmd> getPrepareBattleCmds()
+    {
+        int coinsInBag = getCoins();
+
     }
 
 }
