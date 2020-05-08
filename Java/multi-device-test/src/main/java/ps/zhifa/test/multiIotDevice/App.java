@@ -10,7 +10,6 @@ import ps.zhifa.test.multiIotDevice.Entity.Cmd.EconomicalBehaviourCmd;
 import ps.zhifa.test.multiIotDevice.Entity.Drop.DropUtil;
 import ps.zhifa.test.multiIotDevice.Entity.Spot.BattleSpot;
 import ps.zhifa.test.multiIotDevice.Entity.Spot.CitySpot;
-import ps.zhifa.test.multiIotDevice.Entity.Spot.ShopSpot;
 import ps.zhifa.test.multiIotDevice.Entity.Spot.Spot;
 import ps.zhifa.test.multiIotDevice.common.FileUtils;
 
@@ -24,7 +23,7 @@ public class App
     List<Player> _players;
     List<Spot> _spots;
     CitySpot _citySpot;
-    ShopSpot _shopSpot;
+    Player.ShopSpot _shopSpot;
     DropUtil _dropUtil;
     long _lastFramTime;
     boolean _inited;
@@ -78,7 +77,7 @@ public class App
     protected void initSpot()
     {
         _citySpot = new CitySpot("勇者大陆");
-        _shopSpot = new ShopSpot("甜心商店");
+        _shopSpot = new Player.ShopSpot("甜心商店");
         _spots = new ArrayList<>(_players.size());
         for(int i=0;i<_players.size();i++)
         {
@@ -159,16 +158,12 @@ public class App
             {
                 //如果欠钱，则充值
                 int coinsInBag = player.getCoins();
-                if(coinsInBag<0)
+                while (coinsInBag<0)
                 {
-                    EconomicalBehaviourCmd ecoBavCmd = new EconomicalBehaviourCmd();
-                    ecoBavCmd.setSubType(EconomicalBehaviourCmd.SubType.Charge);
-                    ecoBavCmd.setPlayer(player);
-                    _shopSpot.excuteCmd(ecoBavCmd);
-                    continue;
+                    player.charge();
                 }
                 //如果备战物资不够，则购买。
-
+                
 
 
                 //如果金币不够则充值。

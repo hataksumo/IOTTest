@@ -10,4 +10,5 @@ public class ItemConfigData
     int iniNum;
     int quality;
     float[] params;
+    int price;
 }

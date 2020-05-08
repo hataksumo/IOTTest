@@ -4,9 +4,11 @@ import com.huaweicloud.sdk.iot.device.IoTDevice;
 import ps.zhifa.test.multiIotDevice.App;
 import ps.zhifa.test.multiIotDevice.Config.Data.*;
 import ps.zhifa.test.multiIotDevice.Config.ItemConfig;
+import ps.zhifa.test.multiIotDevice.Entity.Cmd.BehaviourCmd;
 import ps.zhifa.test.multiIotDevice.Entity.Cmd.EconomicalBehaviourCmd;
 import ps.zhifa.test.multiIotDevice.Entity.Skill.SkillEffectEntity;
 import ps.zhifa.test.multiIotDevice.Entity.Spot.BattleSpot;
+import ps.zhifa.test.multiIotDevice.Entity.Spot.Shop;
 import ps.zhifa.test.multiIotDevice.Entity.Spot.Spot;
 import ps.zhifa.test.multiIotDevice.common.Global;
 import ps.zhifa.test.multiIotDevice.service.RpgChargeService;
@@ -189,10 +191,41 @@ public class Player extends ActiveEntity
         return _bag.get(HP_BOTTLE_ID) >= _prepareHpBottleNum && _bag.get(RESURRECT_STONE_ID) >= _prepareResurrectStone;
     }
 
-    public List<EconomicalBehaviourCmd> getPrepareBattleCmds()
+    public void prepareBattle()
     {
-        int coinsInBag = getCoins();
-
+        int bottleNum = _bag.get(HP_BOTTLE_ID);
+        if(bottleNum < _prepareHpBottleNum)
+        {
+            buyBottles(_prepareHpBottleNum - bottleNum);
+        }
+        int resurrectNum = _bag.get(RESURRECT_STONE_ID);
+        if(resurrectNum < _prepareResurrectStone)
+        {
+            buyResurrectStone(_prepareResurrectStone - resurrectNum);
+        }
     }
+
+    public void buyBottles(int v_num)
+    {
+        while(Shop.get_instance().buyItems(this,HP_BOTTLE_ID,v_num)>0)
+        {
+            charge();
+        }
+    }
+
+    public void buyResurrectStone(int v_num)
+    {
+        while(Shop.get_instance().buyItems(this,RESURRECT_STONE_ID,v_num)>0)
+        {
+            charge();
+        }
+    }
+
+    public void charge()
+    {
+        _charge = _charge + 6;
+        _bag.put(COIN_ID,_bag.get(COIN_ID)+1000);
+    }
+
 
 }
