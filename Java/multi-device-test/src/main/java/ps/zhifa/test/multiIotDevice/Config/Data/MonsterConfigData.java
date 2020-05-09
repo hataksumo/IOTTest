@@ -9,4 +9,5 @@ public class MonsterConfigData
     String name;
     AttrConfigData attr;
     int[] skills;
+    String[] drops;
 }

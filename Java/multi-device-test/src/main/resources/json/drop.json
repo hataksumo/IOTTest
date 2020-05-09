@@ -1,12 +1,19 @@
 {
 	"data" : {
-		"pt-1" : {
+		"pt-1-item" : {
 			"type" : 1,
 			"weight" : 10000,
 			"drops" : [
 				{"itemId" : 10001,"numMin" : 1,"numMax" : 1,"weight" : 3500},
 				{"itemId" : 10001,"numMin" : 1,"numMax" : 1,"weight" : 1250},
 				{"itemId" : 10001,"numMin" : 1,"numMax" : 1,"weight" : 250}
+			]
+		},
+		"pt-1-coin" : {
+			"type" : 2,
+			"weight" : 10000,
+			"drops" : [
+				{"itemId" : 10000,"numMin" : 10,"numMax" : 30,"weight" : 10000}
 			]
 		}
 	},

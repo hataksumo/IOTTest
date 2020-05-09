@@ -1,5 +1,6 @@
 package ps.zhifa.test.multiIotDevice.Entity.Spot;
 
+import ps.zhifa.test.multiIotDevice.common.ItemElementData;
 import ps.zhifa.test.multiIotDevice.Config.Data.MonsterConfigData;
 import ps.zhifa.test.multiIotDevice.Config.MonsterConfig;
 import ps.zhifa.test.multiIotDevice.Entity.ActiveEntity;
@@ -55,6 +56,11 @@ public class BattleSpot extends Spot
         //清除死亡怪物
         if(_monster != null&&!_monster.isAlive())
         {
+            List<ItemElementData> drops = _monster.drop();
+            if(_player!=null)
+            {
+                _player.pickupDropAward(drops);
+            }
             _monster = null;
             monsterRefreshDownTime();
         }
@@ -63,7 +69,7 @@ public class BattleSpot extends Spot
     protected void afterStep()
     {
         //如果玩家死亡，怪物立刻消失
-        if(!_player.isAlive())
+        if(_player==null||!_player.isAlive())
         {
             _monster = null;
             monsterRefreshDownTime();
@@ -110,9 +116,10 @@ public class BattleSpot extends Spot
         return monster;
     }
 
-    public void onPlayerLeaveOrDie()
+    @Override
+    public void onPlayerLeave()
     {
-        if(_monster.isAlive())
+        if(_monster!=null&&_monster.isAlive())
         {
             _monster = null;
         }

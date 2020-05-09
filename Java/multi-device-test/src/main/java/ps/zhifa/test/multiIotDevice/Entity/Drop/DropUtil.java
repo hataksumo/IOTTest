@@ -2,6 +2,7 @@ package ps.zhifa.test.multiIotDevice.Entity.Drop;
 
 import ps.zhifa.test.multiIotDevice.Config.Data.DropConfigData;
 import ps.zhifa.test.multiIotDevice.Config.Data.DropGroupConfigData;
+import ps.zhifa.test.multiIotDevice.common.ItemElementData;
 import ps.zhifa.test.multiIotDevice.Config.DropConfig;
 
 import java.util.ArrayList;
@@ -25,18 +26,23 @@ public class DropUtil
         return (int)(Math.random()*(v_max-v_min+1) + v_min);
     }
 
-    public List<DropItem> getRandom(String v_key)
+    public List<ItemElementData> getRandom(String v_key)
     {
-        List<DropItem> rtn = new ArrayList<>();
+        List<ItemElementData> rtn = new ArrayList<>();
         DropGroupConfigData group = DropConfig.get_instance().get(v_key);
-        List<DropConfigData> drops = group.getData();
+        List<DropConfigData> drops = group.random();
+        if(drops == null)
+        {
+            System.out.println("掉落组 "+v_key+" 没有找到数据");
+            return null;
+        }
         for(int i=0;i<drops.size();i++)
         {
             DropConfigData theData = drops.get(i);
             int num = getNum(theData.getNumMin(),theData.getNumMax());
-            DropItem di = new DropItem();
+            ItemElementData di = new ItemElementData();
             di.setItemId(theData.getItemId());
-            di.setNum(num);
+            di.setCnt(num);
             rtn.add(di);
         }
         return rtn;

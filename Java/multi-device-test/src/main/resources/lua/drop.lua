@@ -11,7 +11,7 @@ primary key:
 ]]
 local _T = LangUtil.Language
 return{
-	["pt-1"] = {
+	["pt-1-item"] = {
 		type = 1,
 		weight = 10000,
 		drops = {
@@ -19,5 +19,12 @@ return{
 			[2] = {itemId = 10001,numMin = 1,numMax = 1,weight = 1250},
 			[3] = {itemId = 10001,numMin = 1,numMax = 1,weight = 250}
 		}
-	}--普通怪掉落
+	},--普通怪掉落
+	["pt-1-coin"] = {
+		type = 2,
+		weight = 10000,
+		drops = {
+			[1] = {itemId = 10000,numMin = 10,numMax = 30,weight = 10000}
+		}
+	}--普通怪金币掉落
 }

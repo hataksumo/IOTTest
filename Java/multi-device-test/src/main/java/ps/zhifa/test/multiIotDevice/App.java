@@ -6,7 +6,6 @@ import ps.zhifa.test.multiIotDevice.Config.*;
 import ps.zhifa.test.multiIotDevice.Config.Data.PlayerConfigData;
 import ps.zhifa.test.multiIotDevice.Entity.*;
 import ps.zhifa.test.multiIotDevice.Entity.Cmd.BehaviourCmd;
-import ps.zhifa.test.multiIotDevice.Entity.Cmd.EconomicalBehaviourCmd;
 import ps.zhifa.test.multiIotDevice.Entity.Drop.DropUtil;
 import ps.zhifa.test.multiIotDevice.Entity.Spot.BattleSpot;
 import ps.zhifa.test.multiIotDevice.Entity.Spot.CitySpot;
@@ -21,16 +20,17 @@ public class App
     static final int FPS = 60;
 
     List<Player> _players;
-    List<Spot> _spots;
+    List<Spot> _battleSpots;
     CitySpot _citySpot;
-    Player.ShopSpot _shopSpot;
     DropUtil _dropUtil;
     long _lastFramTime;
     boolean _inited;
+    private int _playerNum;
 
     public App()
     {
         _inited = false;
+
     }
 
 
@@ -40,6 +40,7 @@ public class App
         String playerStrCfg = FileUtils.readAllToString("json/player.json");
         JSONObject playerJsonObj = JSON.parseObject(playerStrCfg);
         PlayerConfig.get_instance().init(playerJsonObj.getJSONArray("data"));
+        _playerNum = PlayerConfig.get_instance().getData().size();
         //怪物表
         String monsterStrCfg = FileUtils.readAllToString("json/monster.json");
         JSONObject monsterJsonObj = JSON.parseObject(monsterStrCfg);
@@ -63,10 +64,11 @@ public class App
     {
         PlayerConfig playerConfig = PlayerConfig.get_instance();
         List<PlayerConfigData> playerDatas = playerConfig.getData();
+        _players = new ArrayList<>(_playerNum);
         for(int i=0;i<playerDatas.size();i++)
         {
             Player p = new Player();
-            p.initWithConfig(playerDatas.get(i));
+            p.initWithConfig(playerDatas.get(i),this);
             p.reborn();
             p.enterSpot(_citySpot);
             _players.add(p);
@@ -77,12 +79,11 @@ public class App
     protected void initSpot()
     {
         _citySpot = new CitySpot("勇者大陆");
-        _shopSpot = new Player.ShopSpot("甜心商店");
-        _spots = new ArrayList<>(_players.size());
-        for(int i=0;i<_players.size();i++)
+        _battleSpots = new ArrayList<>(_playerNum);
+        for(int i=0;i<_playerNum;i++)
         {
             Spot sp = new BattleSpot("战斗场景_"+i);
-            _spots.add(sp);
+            _battleSpots.add(sp);
         }
     }
 
@@ -117,10 +118,14 @@ public class App
         {
             long curTime = System.currentTimeMillis();
             long sleepTime = (long)(1000/FPS - (curTime - _lastFramTime));
-            Thread.sleep(sleepTime);
+            if(sleepTime > 0)
+            {
+                Thread.sleep(sleepTime);
+            }
             curTime = System.currentTimeMillis();
-            step((curTime - _lastFramTime)/1000.0f);
+            float dt = (curTime - _lastFramTime)/1000.0f;
             _lastFramTime = curTime;
+            step(dt);
         }
     }
 
@@ -144,12 +149,15 @@ public class App
                 {
                     //如果有复活石，则原地复活
                     //如果没有复活石，则强制回城，直接扣除金币，可扣为负数
+                    System.out.println(String.format("玩家%s 死亡，剩余金币 %d",player.get_name(),player.getCoins()));
                     if(player.hasResurrectStone())
                     {
+                        System.out.println("吃复活石复活");
                         player.useResurrectStone();
                     }
                     else
                     {
+                        System.out.println("强制买活");
                         player.compulsiveReborn();
                     }
                 }
@@ -157,23 +165,21 @@ public class App
             else if(spot.getType()==Spot.Type.City)
             {
                 //如果欠钱，则充值
-                int coinsInBag = player.getCoins();
-                while (coinsInBag<0)
+                while (player.getCoins()<0)
                 {
                     player.charge();
                 }
                 //如果备战物资不够，则购买。
-                
-
-
                 //如果金币不够则充值。
+                player.prepareBattle();
                 //如果备战物资充裕，则进入战斗场景。
+                player.enterSpot(_battleSpots.get(i));
             }
         }
         //驱动各场景
-        for(int i=0;i<_spots.size();i++)
+        for(int i = 0; i< _battleSpots.size(); i++)
         {
-            Spot spot = _spots.get(i);
+            Spot spot = _battleSpots.get(i);
             spot.step(v_dt);
         }
     }

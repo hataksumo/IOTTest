@@ -1,14 +1,19 @@
 package ps.zhifa.test.multiIotDevice.common;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 
 public class FileUtils
 {
+    static String rootPath = null;
+
+
     public static byte[] readAll(String v_fileName)
     {
-        File theFile = new File(v_fileName);
+        if(rootPath == null)
+        {
+            rootPath = FileUtils.class.getResource("/").getFile();
+        }
+        File theFile = new File(rootPath+v_fileName);
         Long fileLen = theFile.length();
         byte[] data = new byte[fileLen.intValue()];
         try

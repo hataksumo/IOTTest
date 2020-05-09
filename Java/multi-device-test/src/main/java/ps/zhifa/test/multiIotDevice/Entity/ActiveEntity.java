@@ -17,6 +17,7 @@ public abstract class ActiveEntity
     protected float _gcdDownTime;
     protected ActiveEntity _target;
     protected Spot _spot;
+    int _rebornTimes = 0;
 
     protected void initWithAttrCfg(AttrConfigData v_cfg)
     {
@@ -33,7 +34,7 @@ public abstract class ActiveEntity
         SkillConfig skillConfig = SkillConfig.get_instance();
         for(int i=0;i<v_skillIds.length;i++)
         {
-            SkillConfigData skillConfigData = skillConfig.get(i);
+            SkillConfigData skillConfigData = skillConfig.get(v_skillIds[i]);
             _skills[i] = new Skill(skillConfigData);
         }
     }
@@ -117,10 +118,16 @@ public abstract class ActiveEntity
     public boolean suffer(SkillEffectEntity v_skillEffectEntity)
     {
         float orgDmg = v_skillEffectEntity.getSkillOrgDmg();
-        float realDmg = orgDmg * (100/(100+_attribute.getDef()));
+        float realDmg = orgDmg * (100.0f/(100.0f+_attribute.getDef()));
         float newHp = _attribute.getHp() - realDmg;
+        onSuffer((int)orgDmg,(int)realDmg,_attribute.getHp(),(int)newHp);
         _attribute.setHp((int)newHp);
         return newHp > 0;
+    }
+
+    public void onSuffer(int v_orgDmg,int v_realDmg,int v_orgHp,int v_newHp)
+    {
+
     }
 
     public void getHeal(SkillEffectEntity v_skillEffectEntity)
@@ -134,6 +141,7 @@ public abstract class ActiveEntity
     {
         _attribute.setHp(_attribute.getMaxHp());
         _attribute.setMp(_attribute.getMp());
+        _rebornTimes++;
         //_onReborn();
     }
 

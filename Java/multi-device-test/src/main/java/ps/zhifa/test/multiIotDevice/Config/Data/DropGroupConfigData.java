@@ -10,16 +10,16 @@ public class DropGroupConfigData
 {
     int type;
     int weight;
-    List<DropConfigData> data;
+    DropConfigData[] drops;
     public List<DropConfigData> random()
     {
         List<DropConfigData> rtn = new ArrayList<>();
         if(type == 1)
         {
             int rd = (int)(Math.random() * weight);
-            for(int i=0;i<data.size();i++)
+            for(int i = 0; i< drops.length; i++)
             {
-                DropConfigData dropElement = data.get(i);
+                DropConfigData dropElement = drops[i];
                 if(rd<dropElement.getWeight())
                 {
                     rtn.add(dropElement);
@@ -30,9 +30,9 @@ public class DropGroupConfigData
         }else
         {
             int rd = (int)(Math.random() * weight);
-            for(int i=0;i<data.size();i++)
+            for(int i = 0; i< drops.length; i++)
             {
-                DropConfigData dropElement = data.get(i);
+                DropConfigData dropElement = drops[i];
                 if(rd<dropElement.getWeight())
                 {
                     rtn.add(dropElement);

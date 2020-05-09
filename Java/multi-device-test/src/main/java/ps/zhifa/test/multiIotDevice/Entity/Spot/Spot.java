@@ -35,6 +35,7 @@ public abstract class Spot
         Shop
     }
     public abstract void onPlayerEnter(Player v_player);
+    public abstract void onPlayerLeave();
     public abstract void step(float v_dt);
     public abstract void excuteCmd(BehaviourCmd v_cmd);
 

@@ -19,6 +19,11 @@ public class CitySpot extends Spot{
     }
 
     @Override
+    public void onPlayerLeave() {
+
+    }
+
+    @Override
     public void step(float v_dt) {
 
     }

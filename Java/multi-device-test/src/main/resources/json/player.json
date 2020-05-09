@@ -1,9 +1,9 @@
 {
 	"data" : [
-		{"id" : "test_player_001","device" : {"id" : "test_player_001","secret" : "qqhilvMgAl7"},"attr" : {"maxHp" : 350,"maxMp" : 100,"atk" : 60,"def" : 30},"skills" : [10001,10002],"rebornBuyHpBottleNum" : 20,"rebornBuyResurrectStone" : 0},
-		{"id" : "test_player_002","device" : {"id" : "test_player_002","secret" : "qqhilvMgAl7"},"attr" : {"maxHp" : 350,"maxMp" : 100,"atk" : 60,"def" : 30},"skills" : [10001,10002],"rebornBuyHpBottleNum" : 40,"rebornBuyResurrectStone" : 0},
-		{"id" : "test_player_003","device" : {"id" : "test_player_003","secret" : "qqhilvMgAl7"},"attr" : {"maxHp" : 350,"maxMp" : 100,"atk" : 60,"def" : 30},"skills" : [10001,10002],"rebornBuyHpBottleNum" : 20,"rebornBuyResurrectStone" : 1},
-		{"id" : "test_player_004","device" : {"id" : "test_player_004","secret" : "qqhilvMgAl7"},"attr" : {"maxHp" : 350,"maxMp" : 100,"atk" : 60,"def" : 30},"skills" : [10001,10002],"rebornBuyHpBottleNum" : 40,"rebornBuyResurrectStone" : 1}
+		{"id" : "test_player_001","device" : {"id" : "5eb22f003744a60405dbbb87_test_player_001","secret" : "qqhilvMgAl7"},"attr" : {"maxHp" : 350,"maxMp" : 100,"atk" : 60,"def" : 30},"skills" : [10001,10002],"rebornBuyHpBottleNum" : 20,"rebornBuyResurrectStone" : 0},
+		{"id" : "test_player_002","device" : {"id" : "5eb22f003744a60405dbbb87_test_player_002","secret" : "qqhilvMgAl7"},"attr" : {"maxHp" : 350,"maxMp" : 100,"atk" : 60,"def" : 30},"skills" : [10001,10002],"rebornBuyHpBottleNum" : 40,"rebornBuyResurrectStone" : 0},
+		{"id" : "test_player_003","device" : {"id" : "5eb22f003744a60405dbbb87_test_player_003","secret" : "qqhilvMgAl7"},"attr" : {"maxHp" : 350,"maxMp" : 100,"atk" : 60,"def" : 30},"skills" : [10001,10002],"rebornBuyHpBottleNum" : 20,"rebornBuyResurrectStone" : 1},
+		{"id" : "test_player_004","device" : {"id" : "5eb22f003744a60405dbbb87_test_player_004","secret" : "qqhilvMgAl7"},"attr" : {"maxHp" : 350,"maxMp" : 100,"atk" : 60,"def" : 30},"skills" : [10001,10002],"rebornBuyHpBottleNum" : 40,"rebornBuyResurrectStone" : 1}
 	],
 	"excelName" : "player.玩家.xlsx"
 }

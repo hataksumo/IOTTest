@@ -1,4 +1,4 @@
-package ps.zhifa.test.multiIotDevice.Config.Data;
+package ps.zhifa.test.multiIotDevice.common;
 
 import lombok.Data;
 
